@@ -54,7 +54,7 @@ if ($ssh_port eq "")
 	$ssh_port = "22";
 }
 
-# Proof of functionality - Or just incase its already open!
+# Proof of functionality - Or just in case its already open!
 print "\n===========================================================\n";
 
 print "\nChecking SSH port $ssh_port...\n";
