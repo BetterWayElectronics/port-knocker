@@ -54,10 +54,25 @@ if ($ssh_port eq "")
 	$ssh_port = "22";
 }
 
-# Split input per spaced port number
-my @ports_list = split / /, $port_list;
+# Proof of functionality - Or just incase its already open!
+print "\n===========================================================\n";
+
+print "\nChecking SSH port $ssh_port...\n";
+ 
+if( my $socket = IO::Socket::INET->new(PeerAddr => $target , PeerPort => $ssh_port , Proto => 'tcp' , Timeout => 1 ))
+{
+	print colored ['bold green'], "Port $ssh_port is already open\n" ;
+	goto QUIT;
+}
+else
+{
+	print colored ['bold red'], "Port $ssh_port is closed\n" ;
+}
 
 print "\n===========================================================\n\n";
+
+# Split input per spaced port number
+my @ports_list = split / /, $port_list;
 
 # Loop the list of ports
 foreach my $port ( @ports_list ) {
