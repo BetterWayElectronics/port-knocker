@@ -24,16 +24,60 @@ my $BwE = (colored ['bold magenta'], qq{
 |        		                                  |
 ===========================================================\n\n});
 print $BwE;
+
+my $target;
+my $port_list;
+my $delay;
+my $ssh_port;
  
 # Grab inputs
 print "Enter Target: ";
-chop (my $target = <stdin>);
+chop ($target = <stdin>);
+
+# Keyword Auto-filler! Make life easy.
+if ($target eq "keyword1")
+{
+	$target = "10.0.0.1";
+	$port_list = "1111 2222 3333 4444";
+	$delay = "0.5";
+	$ssh_port = "666";
+	goto SKIP;
+}
+
+if ($target eq "keyword2")
+{
+	$target = "10.0.0.1";
+	$port_list = "1111 2222 3333 4444";
+	$delay = "0.5";
+	$ssh_port = "666";
+	goto SKIP;
+}
+
+if ($target eq "keyword3")
+{
+	$target = "10.0.0.1";
+	$port_list = "1111 2222 3333 4444";
+	$delay = "0.5";
+	$ssh_port = "0";
+	goto SKIP;
+}
+
+if ($target eq "keyword4")
+{
+	$target = "10.0.0.1";
+	$port_list = "1111 2222 3333 4444";
+	$delay = "0.5";
+	$ssh_port = "0";
+	goto SKIP;
+}
+
+
 print "Enter Ports: ";
-chop (my $port_list = <stdin>);
+chop ($port_list = <stdin>);
 print "Enter Delay (Sec): ";
-chop (my $delay = <stdin>);
+chop ($delay = <stdin>);
 print "Enter SSH Port: ";
-chop (my $ssh_port = <stdin>);
+chop ($ssh_port = <stdin>);
 
 # If no target or port entered
 if ($target eq "" | $port_list eq "")
@@ -54,7 +98,16 @@ if ($ssh_port eq "")
 	$ssh_port = "22";
 }
 
-# Proof of functionality - Or just in case its already open!
+# Skip to preset
+SKIP:
+
+# Proof of functionality - Or just incase its already open!
+if ($ssh_port eq  "0")
+{
+	# NO SSH PORT REQUIRED
+	
+} else {
+	
 print "\n===========================================================\n";
 
 print "\nChecking SSH port $ssh_port...\n";
@@ -67,6 +120,7 @@ if( my $socket = IO::Socket::INET->new(PeerAddr => $target , PeerPort => $ssh_po
 else
 {
 	print colored ['bold red'], "Port $ssh_port is closed\n" ;
+}
 }
 
 print "\n===========================================================\n\n";
@@ -96,6 +150,12 @@ foreach my $port ( @ports_list ) {
 print "\n===========================================================\n";
 
 # Check if knocking is successful
+if ($ssh_port eq  "0")
+{
+	# NO SSH PORT REQUIRED
+	
+} else {
+	
 print "\nChecking SSH port $ssh_port...\n";
  
 if( my $socket = IO::Socket::INET->new(PeerAddr => $target , PeerPort => $ssh_port , Proto => 'tcp' , Timeout => 1 ))
@@ -105,6 +165,7 @@ if( my $socket = IO::Socket::INET->new(PeerAddr => $target , PeerPort => $ssh_po
 else
 {
 	print colored ['bold red'], "Port $ssh_port is closed\n" ;
+}
 }
 
 print "\n\nGo Again? (y/n): "; 
